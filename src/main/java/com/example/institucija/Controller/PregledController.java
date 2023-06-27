@@ -1,2 +1,4 @@
-package com.example.institucija.Controller;public class PregledController {
+package com.example.institucija.Controller;
+
+public class PregledController {
 }
