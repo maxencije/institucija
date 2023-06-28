@@ -16,7 +16,7 @@ public class Institucija {
     @GeneratedValue
     @Column(name = "institucija_id")
     private Long id;
-    private String ime;
+    private String naziv;
     @OneToMany(mappedBy = "institucija", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Pregled> pregledi;

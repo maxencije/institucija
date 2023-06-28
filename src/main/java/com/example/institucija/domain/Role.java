@@ -10,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import static javax.persistence.GenerationType.AUTO;
-
 @Entity
 @Data
 @NoArgsConstructor
@@ -22,6 +20,6 @@ public class Role {
     @GeneratedValue
     private Long id;
     private String name;
-    @OneToOne(mappedBy = "role")
+    @OneToOne
     private Role role;
 }
