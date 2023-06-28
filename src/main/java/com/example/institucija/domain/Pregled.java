@@ -1,11 +1,11 @@
-package com.example.institucija.Domain;
+package com.example.institucija.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -23,9 +23,9 @@ public class Pregled {
     @JoinColumn(name = "institucija_id")
     private Institucija institucija;
     private Date datum;
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "kontrolniPregled_id")
-    private KontrolniPregled kontrolniPregled;
+    private List<KontrolniPregled> kontrolniPregled;
     @OneToOne
     private Podaci podatak;
 }

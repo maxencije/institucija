@@ -1,8 +1,7 @@
-package com.example.institucija.Domain;
+package com.example.institucija.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
