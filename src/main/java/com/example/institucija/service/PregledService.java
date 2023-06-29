@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface PregledService {
     Pregled savePregled(Pregled pregled);
-    Pregled getPregled(String id);
-    void deletePregled(String id);
-    Pregled updatePregled(Long id, Date datum);
+    Pregled getPregled(Long id);
+    void deletePregled(Long id);
+    void updatePregled(Long id, Date datum);
     List<Pregled> getPregledi();
     List<Pregled> getPreglediByPacijent(Pacijent pacijent);
     List<KontrolniPregled> getKontrolniPreglediByPregled();

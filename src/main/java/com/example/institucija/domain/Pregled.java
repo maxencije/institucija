@@ -29,7 +29,7 @@ public class Pregled {
     private Date datum;
     @OneToMany
     @JoinColumn(name = "kontrolniPregled_id")
-    private List<KontrolniPregled> kontrolniPregled;
+    private List<KontrolniPregled> kontrolniPregledi;
     @OneToOne
     private Podaci podatak;
 }

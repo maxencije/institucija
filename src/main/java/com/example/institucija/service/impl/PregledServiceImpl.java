@@ -3,7 +3,9 @@ package com.example.institucija.service.impl;
 import com.example.institucija.domain.KontrolniPregled;
 import com.example.institucija.domain.Pacijent;
 import com.example.institucija.domain.Pregled;
+import com.example.institucija.repo.KontrolniPregledRepo;
 import com.example.institucija.repo.PregledRepo;
+import com.example.institucija.service.KontrolniPregledService;
 import com.example.institucija.service.PregledService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,14 +14,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class PregledServiceImpl implements PregledService {
+public class PregledServiceImpl implements PregledService, KontrolniPregledService {
 
     private final PregledRepo pregledRepo;
+    private final KontrolniPregledRepo kontrolniPregledRepo;
+
 
     @Override
     public Pregled savePregled(Pregled pregled) {
@@ -28,28 +33,28 @@ public class PregledServiceImpl implements PregledService {
     }
 
     @Override
-    public Pregled getPregled(String id) {
+    public Pregled getPregled(Long id) {
         log.info("Fetching Pregled {}", id);
-        return pregledRepo.findById(Long.parseLong(id)).orElse(null);
+        return pregledRepo.findById(id).orElse(null);
     }
 
     @Override
-    public void deletePregled(String id) {
+    public void deletePregled(Long id) {
         log.info("Deleting Pregled {}", id);
-        pregledRepo.deleteById(Long.parseLong(id));
+        pregledRepo.deleteById(id);
     }
 
     @Override
-    public Pregled updatePregled(Long id, Date datum) {
+    public void updatePregled(Long id, Date datum) {
         log.info("Searching for Pregled with ID {}", id);
         Pregled _pregled = pregledRepo.findById(id).orElse(null);
         if(_pregled == null) {
             log.info("Pregled {} not found", id);
-            return null;
+            return;
         }
         _pregled.setDatum(datum);
         log.info("Pregled found and updated {}", id);
-        return pregledRepo.save(_pregled);
+        pregledRepo.save(_pregled);
     }
 
     @Override
@@ -68,5 +73,71 @@ public class PregledServiceImpl implements PregledService {
     public List<KontrolniPregled> getKontrolniPreglediByPregled() {
         log.info("Fetching all KontrolniPregledi by Pregled");
         return pregledRepo.getKontrolniPreglediByPregled();
+    }
+
+    @Override
+    public KontrolniPregled addKontrolniPregled(KontrolniPregled kontrolniPregled, Long idPregled) {
+        log.info("Saving new Kontrolni Pregled to Pregled {}", idPregled);
+        Pregled _pregled = pregledRepo.findById(idPregled).orElse(null);
+        if(_pregled == null) {
+            log.info("Pregled {} not found", idPregled);
+            return null;
+        }
+        _pregled.getKontrolniPregledi().add(kontrolniPregled);
+        log.info("New Kontrolni Pregled saved to Pregled {}", idPregled);
+        pregledRepo.save(_pregled);
+        return kontrolniPregledRepo.save(kontrolniPregled);
+    }
+
+    @Override
+    public KontrolniPregled getKontrolniPregled(Long id) {
+        log.info("Fetching Kontrolni Pregled {}", id);
+        return kontrolniPregledRepo.findById(id).orElse(null);
+    }
+
+    @Override
+    public void deleteKontrolniPregled(Long idPregled, Long idKontrolniPregled) {
+        log.info("Deleting Kontrolni Pregled {}", idKontrolniPregled);
+        kontrolniPregledRepo.deleteById(idKontrolniPregled);
+        Optional<Pregled> pregled = pregledRepo.findById(idPregled);
+        Optional<KontrolniPregled> kontrolniPregled = kontrolniPregledRepo.findById(idKontrolniPregled);
+        if(pregled.isPresent()) {
+            Pregled _pregled = pregled.get();
+            if(kontrolniPregled.isEmpty()) {
+                log.info("Kontrolni Pregled {} not found", idKontrolniPregled);
+                return;
+            }
+            log.info("Kontrolni Pregled {} not found", idKontrolniPregled);
+            _pregled.getKontrolniPregledi().remove(kontrolniPregled.get());
+        }
+        log.info("Pregled {} not found", idPregled);
+    }
+
+    @Override
+    public void updateKontrolniPregled(Long idPregled, Long idKontrolniPregled, Date datum) {
+        log.info("Searching for Pregled with ID {}", idPregled);
+        Pregled _pregled = pregledRepo.findById(idPregled).orElse(null);
+        if(_pregled == null) {
+            log.info("Pregled {} not found", idPregled);
+            return;
+        }
+        KontrolniPregled _kontrolniPregled = kontrolniPregledRepo.findById(idKontrolniPregled).orElse(null);
+        if(_kontrolniPregled == null) {
+            log.info("Kontrolni Pregled {} not found", idKontrolniPregled);
+            return;
+        }
+        if(_pregled.getKontrolniPregledi().contains(_kontrolniPregled)) {
+            log.info("Kontrolni Pregled {} found within Pregled {} and updated", idKontrolniPregled, idPregled);
+            _pregled.getKontrolniPregledi().remove(_kontrolniPregled);
+            _kontrolniPregled.setDatum(datum);
+            _pregled.getKontrolniPregledi().add(_kontrolniPregled);
+            pregledRepo.save(_pregled);
+            kontrolniPregledRepo.save(_kontrolniPregled);
+        }
+    }
+
+    @Override
+    public List<KontrolniPregled> getKontrolniPregledi() {
+        return kontrolniPregledRepo.findAll();
     }
 }
