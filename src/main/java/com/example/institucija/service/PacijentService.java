@@ -1,7 +1,11 @@
 package com.example.institucija.service;
 
-import org.springframework.stereotype.Service;
+import com.example.institucija.domain.Pacijent;
 
-@Service
-public class PacijentService {
+import java.util.List;
+
+public interface PacijentService {
+    Pacijent savePacijent(Pacijent pacijent);
+    Pacijent getPacijent(String brojKnjizice);
+    List<Pacijent> getPacijenti();
 }

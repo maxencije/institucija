@@ -1,8 +1,12 @@
 package com.example.institucija.service;
 
-import org.springframework.stereotype.Service;
+import com.example.institucija.domain.Institucija;
 
-@Service
-public class InstitucijaService {
+import java.util.List;
+import java.util.Optional;
 
+public interface InstitucijaService {
+    Institucija save(Institucija institucija);
+    Institucija getInstitucija(String naziv);
+    List<Institucija> getInstitucije();
 }
