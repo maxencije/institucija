@@ -64,15 +64,15 @@ public class PregledServiceImpl implements PregledService, KontrolniPregledServi
     }
 
     @Override
-    public List<Pregled> getPreglediByPacijent(Pacijent pacijent) {
-        log.info("Fetching all Pregledi by Pacijent {}", pacijent);
-        return pregledRepo.getPreglediByPacijent(pacijent);
+    public List<Pregled> getPreglediByPacijent(Long idPacijent) {
+        log.info("Fetching all Pregledi by Pacijent with ID {}", idPacijent);
+        return pregledRepo.getPreglediByPacijent(idPacijent);
     }
 
     @Override
-    public List<KontrolniPregled> getKontrolniPreglediByPregled() {
+    public List<KontrolniPregled> getKontrolniPreglediByPregledId(Long id) {
         log.info("Fetching all KontrolniPregledi by Pregled");
-        return pregledRepo.getKontrolniPreglediByPregled();
+        return pregledRepo.getKontrolniPreglediByPregledId(id);
     }
 
     @Override

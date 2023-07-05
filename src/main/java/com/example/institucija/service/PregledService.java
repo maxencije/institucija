@@ -13,6 +13,6 @@ public interface PregledService {
     void deletePregled(Long id);
     void updatePregled(Long id, Date datum);
     List<Pregled> getPregledi();
-    List<Pregled> getPreglediByPacijent(Pacijent pacijent);
-    List<KontrolniPregled> getKontrolniPreglediByPregled();
+    List<Pregled> getPreglediByPacijent(Long idPacijent);
+    List<KontrolniPregled> getKontrolniPreglediByPregledId(Long id);
 }

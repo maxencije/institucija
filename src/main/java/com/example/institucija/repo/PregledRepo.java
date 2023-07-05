@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface PregledRepo extends JpaRepository<Pregled, Long> {
     Pregled updatePregled(Pregled pregled);
-    List<Pregled> getPreglediByPacijent(Pacijent pacijent);
-    List<KontrolniPregled> getKontrolniPreglediByPregled();
+    List<Pregled> getPreglediByPacijent(Long idPacijent);
+    List<KontrolniPregled> getKontrolniPreglediByPregledId(Long id);
 }
